@@ -11,6 +11,8 @@ public interface ItemDAO {
 
     public ArrayList<String> getAllItemCode() throws SQLException, ClassNotFoundException;
 
+    public  ArrayList<ItemDTO> findItem(String code) throws SQLException, ClassNotFoundException;
+
     public void saveItem(ItemDTO itemDTO) throws SQLException, ClassNotFoundException;
 
     public void updateItem(ItemDTO itemDTO) throws SQLException, ClassNotFoundException ;
@@ -22,5 +24,5 @@ public interface ItemDAO {
     public String generateNewId() throws SQLException, ClassNotFoundException;
 
     public int updateItem(int qtyOnHand,String code,ItemDTO item) throws SQLException, ClassNotFoundException;
-    public ItemDTO findItem(String newItemCode) throws SQLException, ClassNotFoundException;
+    public ItemDTO findItemCom(String newItemCode) throws SQLException, ClassNotFoundException;
 }

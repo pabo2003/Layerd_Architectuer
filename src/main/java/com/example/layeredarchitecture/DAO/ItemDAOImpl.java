@@ -37,6 +37,27 @@ public class ItemDAOImpl implements ItemDAO{
     }
 
     @Override
+    public  ArrayList<ItemDTO> findItem(String code) throws SQLException, ClassNotFoundException {Connection connection = DBConnection.getDbConnection().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("SELECT * FROM Item WHERE code=?");
+        pstm.setString(1, code);
+        ResultSet rst = pstm.executeQuery();
+        ArrayList<ItemDTO>  arrayList = new ArrayList<>();
+        while(rst.next()){
+            ItemDTO itemDTO = new ItemDTO
+                    (rst.getString("code"),
+                            rst.getString("description"),
+                            rst.getBigDecimal("unitPrice"),
+                            rst.getInt("qtyOnHand")
+                    );
+            arrayList.add(itemDTO);
+
+        }
+
+        return  arrayList;
+
+    }
+
+    @Override
     public void saveItem(ItemDTO itemDTO) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("INSERT INTO Item (code, description, unitPrice, qtyOnHand) VALUES (?,?,?,?)");
@@ -98,18 +119,14 @@ public class ItemDAOImpl implements ItemDAO{
     }
 
     @Override
-    public ItemDTO findItem(String newItemCode) throws SQLException, ClassNotFoundException {
+    public ItemDTO findItemCom(String newItemCode) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("SELECT * FROM Item WHERE code=?");
         pstm.setString(1, newItemCode + "");
         ResultSet rst = pstm.executeQuery();
-        if(rst.next()){
-         String description = rst.getString(2);
-            BigDecimal unitPrice = rst.getBigDecimal("unitPrice");
-         int qtyOnHand = Integer.parseInt(rst.getString(4));
-         ItemDTO itemDTO = new ItemDTO(newItemCode + "",description,unitPrice,qtyOnHand);
-         return itemDTO;
-        }
-        return null;
+        rst.next();
+
+        return new ItemDTO(newItemCode + "", rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand"));
+
     }
 }
