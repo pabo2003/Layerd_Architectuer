@@ -34,21 +34,27 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public boolean saveOrder(OrderDTO orderDTO, List<OrderDetailDTO> orderDetailDTO) throws SQLException, ClassNotFoundException {
-        connection.setAutoCommit(false);
-        PreparedStatement stm = connection.prepareStatement("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)");
+        OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAOImpl();
+        connection = DBConnection.getDbConnection().getConnection();
+        PreparedStatement stm;
+        stm = connection.prepareStatement("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)");
         stm.setString(1, orderDTO.getOrderId());
         stm.setDate(2, Date.valueOf(orderDTO.getOrderDate()));
         stm.setString(3, orderDTO.getCustomerId());
 
         if (stm.executeUpdate() == 1) {
+            if(orderDetailsDAO.addOrderDetails(orderDTO.getOrderId(),orderDetailDTO)){
 
-            if (OrderDetailsDAOImpl.add(orderDTO.getOrderId(),orderDetailDTO)) {
                 connection.commit();
                 connection.setAutoCommit(true);
                 return true;
+
             }
+
             connection.rollback();
             connection.setAutoCommit(true);
+
+
         }connection.rollback();
         connection.setAutoCommit(true);
         return false;

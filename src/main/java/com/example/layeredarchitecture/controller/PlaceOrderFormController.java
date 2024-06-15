@@ -146,7 +146,7 @@ public class PlaceOrderFormController {
 
                     itemDAO.findItem(newItemCode);
 
-                    ItemDTO itemDTO = new ItemDTO();
+                    ItemDTO itemDTO = itemDAO.findItemCom(newItemCode);
                     txtDescription.setText(itemDTO.getDescription());
                     txtUnitPrice.setText(itemDTO.getUnitPrice().setScale(2).toString());
 
