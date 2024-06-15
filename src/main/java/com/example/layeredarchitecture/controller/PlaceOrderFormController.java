@@ -53,6 +53,10 @@ public class PlaceOrderFormController {
     private String orderId;
     ItemDAO itemDAO = new ItemDAOImpl();
     CustomerDAO customerDAO = new CustomerDAOImpl();
+    OrderDAO orderDAO = new OrderDAOImpl();
+
+    public PlaceOrderFormController() throws SQLException, ClassNotFoundException {
+    }
 
 
     public void initialize() throws SQLException, ClassNotFoundException {
@@ -215,7 +219,6 @@ public class PlaceOrderFormController {
             Statement stm = connection.createStatement();
             ResultSet rst = stm.executeQuery("SELECT oid FROM `Orders` ORDER BY oid DESC LIMIT 1;");
 */
-            OrderDAO orderDAO = new OrderDAOImpl();
             String id = orderDAO.generateNewId();
 
             if (id == null) {

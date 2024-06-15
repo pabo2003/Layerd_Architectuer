@@ -75,7 +75,6 @@ public class ManageCustomersFormController {
             Statement stm = connection.createStatement();
             ResultSet rst = stm.executeQuery("SELECT * FROM Customer");*/
 //use Interface to loose coupling
-//            CustomerDAO customerDAO =  new CustomerDAOImpl();
             ArrayList<CustomerDTO> customerDTOArrayList = customerDAO.getAllCustomer();
             for (CustomerDTO customerDAO1 : customerDTOArrayList){
                 tblCustomers.getItems().add(new CustomerTM(customerDAO1.getId(),customerDAO1.getName(),customerDAO1.getAddress()));
@@ -136,8 +135,6 @@ public class ManageCustomersFormController {
         String address = txtCustomerAddress.getText();
 
         CustomerDTO customerDTO = new CustomerDTO(id,name,address);
-//        CustomerDAO customerDAO = new CustomerDAOImpl();
-
 
         if (!name.matches("[A-Za-z ]+")) {
             new Alert(Alert.AlertType.ERROR, "Invalid name").show();
@@ -206,7 +203,6 @@ public class ManageCustomersFormController {
         pstm.setString(1, id);
         return pstm.executeQuery().next();*/
 
-//        CustomerDAO customerDAO = new CustomerDAOImpl();
         customerDAO.existCustomer1(id);
         return false;
     }
@@ -224,7 +220,7 @@ public class ManageCustomersFormController {
             pstm.setString(1, id);
             pstm.executeUpdate();*/
 
-//            CustomerDAO customerDAO = new CustomerDAOImpl();
+
             customerDAO.deleteCustomer(id);
 
             tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
@@ -243,7 +239,6 @@ public class ManageCustomersFormController {
             /*Connection connection = DBConnection.getDbConnection().getConnection();
             ResultSet rst = connection.createStatement().executeQuery("SELECT id FROM Customer ORDER BY id DESC LIMIT 1;");
 */
-//            CustomerDAO customerDAO = new CustomerDAOImpl();
             String id = customerDAO.generateNewId();
            if (id == null) {
                return "C00-001";

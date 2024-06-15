@@ -24,5 +24,6 @@ public interface ItemDAO {
     public String generateNewId() throws SQLException, ClassNotFoundException;
 
     public int updateItem(int qtyOnHand,String code,ItemDTO item) throws SQLException, ClassNotFoundException;
+
     public ItemDTO findItemCom(String newItemCode) throws SQLException, ClassNotFoundException;
 }
